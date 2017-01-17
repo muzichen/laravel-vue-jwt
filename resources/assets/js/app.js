@@ -21,8 +21,7 @@ const routes = [
 	},
 	{
 		path : '/login',
-		component : LoginComponent,
-		mete : { requiresAuth : true }
+		component : LoginComponent
 	}
 ]
 
@@ -30,23 +29,19 @@ export const router = new VueRouter({
 	routes
 })
 
-// router.beforeEach((to, from, next) => {
-// 	console.log(from)
-// 	console.log(to)
-// 	if (to.matched[0].meta.requiresAuth) {
-// 		if (!auth.isLogin()) {
-// 			next({
-// 				path : '/login'
-// 			})
-// 		} else {
-// 			next({
-// 				path : '/home'
-// 			})
-// 		}
-// 	} else {
-// 		next()
-// 	}
-// })
+router.beforeEach((to, from, next) => {
+	if(to.meta.requiresAuth) {
+		if(auth.isLogin()) {
+			next()
+		} else {
+			next({
+				path : '/login'
+			})
+		}
+	} else {
+		next()
+	}
+})
 
 
 const app = new Vue({
